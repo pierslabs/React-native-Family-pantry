@@ -1,8 +1,17 @@
 /* eslint-disable react/prop-types */
-import React, { useState } from 'react'
-import { View, Text, Button, ImageBackground, Dimensions } from 'react-native'
-import { light } from '../theme/themes'
-import ModalComponent from '../components/modal'
+import { useFormik } from 'formik'
+import React from 'react'
+import {
+	View,
+	Text,
+	Dimensions,
+	TouchableOpacity,
+	TextInput,
+	ImageBackground,
+} from 'react-native'
+import * as Yup from 'yup'
+import Toast from 'react-native-toast-message'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const styles = {
 	image: {
@@ -10,33 +19,85 @@ const styles = {
 		justifyContent: 'center',
 		alignItems: 'center',
 	},
-	infoContainer: {
-		height: 300,
+
+	card: {
 		width: Dimensions.get('window').width - 20,
-		justifyContent: 'space-around',
-		alignItems: 'center',
-		backgroundColor: 'rgba(236, 236, 236, 0.945)',
-		paddingHorizontal: 1,
+		backgroundColor: 'rgba(236, 236, 236, 0.981)',
+		padding: 15,
 	},
 	title: {
-		fontSize: 28,
-		color: '#33b603',
-		fontWeight: 'bold',
+		alignSelf: 'center',
+		fontSize: 25,
+		marginBottom: 10,
 	},
-	text: {
-		fontSize: 22,
-		color: '#742727',
-		textAlign: 'center',
+	btnHeaderConatiner: {
+		marginLeft: 'auto',
+		marginTop: 5,
 	},
-	modalContainer: {
-		flex: 1,
-		justifyContent: 'center',
-		alignItems: 'center',
+	btn: {
+		marginBottom: 10,
+		width: 60,
+		fontSize: 17,
+		color: 'blue',
+	},
+	btnConatiner: {
+		flexDirection: 'row',
+		width: Dimensions.get('window').width - 50,
+		justifyContent: 'space-around',
+		marginBottom: 10,
+		marginTop: 25,
+	},
+	input: {
+		height: 40,
+		borderColor: '#ccc',
+		borderWidth: 1,
+		marginBottom: 10,
+		alignSelf: 'stretch',
+		paddingHorizontal: 5,
 	},
 }
 
-const Login = ({ navigation }) => {
-	const [isModalVisible, setIsModalVisible] = useState(false)
+const Login = ({ setIsModalVisible, isModalVisible, navigation }) => {
+	const formik = useFormik({
+		initialValues: {
+			email: '',
+			password: '',
+		},
+		validationSchema: Yup.object({
+			email: Yup.string().email('Correo invalido').required('requerido'),
+			password: Yup.string().min(6, 'El password debe tener min 6 caracteres'),
+		}),
+		onSubmit: async (x) => {
+			try {
+				const res = await fetch(
+					'https://node-api-family-pantry.vercel.app/login',
+					{
+						method: 'POST',
+						headers: {
+							'content-type': 'application/json',
+						},
+						body: JSON.stringify(x),
+					}
+				)
+
+				const data = await res.json()
+
+				if (!data.token) {
+					return Toast.show({
+						type: 'error',
+						text1: 'Error',
+						text2: data,
+						visibilityTime: 2000,
+					})
+				}
+
+				await AsyncStorage.setItem('token', data.token)
+				navigation.navigate('Pantry')
+			} catch (error) {
+				console.log(error)
+			}
+		},
+	})
 
 	return (
 		<ImageBackground
@@ -45,21 +106,35 @@ const Login = ({ navigation }) => {
 			style={styles.image}
 		>
 			<View style={styles.infoContainer}>
-				<Text light={light} style={styles.title}>
-					Bienvenido a Family Tasks
-				</Text>
-				<Text style={styles.text}>
-					Organiza tus tareas de forma sencilla e intuitiva, compartelas y
-					añadeles recordatorios.
-				</Text>
-				<Button
-					title='Registrate'
-					onPress={() => setIsModalVisible(!isModalVisible)}
-				/>
-				<ModalComponent
-					isModalVisible={isModalVisible}
-					setIsModalVisible={setIsModalVisible}
-				></ModalComponent>
+				<View style={styles.card}>
+					<Text style={styles.title}>Iniciar Sesión</Text>
+					<TextInput
+						onChangeText={formik.handleChange('email')}
+						value={formik.values.email}
+						placeholder='Email'
+						style={styles.input}
+					/>
+					{formik.errors.email && formik.touched.email ? (
+						<Text style={{ color: '#9b2121' }}>{formik.errors.email}</Text>
+					) : null}
+					<TextInput
+						onChangeText={formik.handleChange('password')}
+						value={formik.values.password}
+						placeholder='Password'
+						style={styles.input}
+					/>
+					{formik.errors.password && formik.touched.password ? (
+						<Text style={{ color: '#9b2121', marginBottom: 10 }}>
+							{formik.errors.password}
+						</Text>
+					) : null}
+					<View style={styles.btnConatiner}>
+						<TouchableOpacity onPress={formik.handleSubmit}>
+							<Text>Iniciar Sesión</Text>
+						</TouchableOpacity>
+					</View>
+				</View>
+				<Toast />
 			</View>
 		</ImageBackground>
 	)

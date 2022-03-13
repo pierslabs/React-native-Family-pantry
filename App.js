@@ -15,8 +15,8 @@ const App = () => {
 		<NavigationContainer>
 			<Stack.Navigator>
 				<Stack.Screen
-					name='Login'
-					component={Login}
+					name='Home'
+					component={Home}
 					options={{
 						title: 'Family tasks',
 						headerStyle: {
@@ -29,9 +29,37 @@ const App = () => {
 						},
 					}}
 				/>
-				<Stack.Screen name='Home' component={Home} />
 				<Stack.Screen name='Pantry' component={Pantry} />
-				<Stack.Screen name='SingUp' component={SignUp} />
+				<Stack.Screen
+					name='SignUp'
+					component={SignUp}
+					options={{
+						title: 'Regístrate',
+						headerStyle: {
+							backgroundColor: '#b3c46c',
+						},
+						headerTintColor: linear,
+						headerTitleStyle: {
+							fontWeight: 'bold',
+							fontSize: 20,
+						},
+					}}
+				/>
+				<Stack.Screen
+					name='Login'
+					component={Login}
+					options={{
+						title: 'Login',
+						headerStyle: {
+							backgroundColor: '#b3c46c',
+						},
+						headerTintColor: linear,
+						headerTitleStyle: {
+							fontWeight: 'bold',
+							fontSize: 20,
+						},
+					}}
+				/>
 			</Stack.Navigator>
 		</NavigationContainer>
 	)
