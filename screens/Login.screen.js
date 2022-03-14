@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import { useFormik } from 'formik'
-import React from 'react'
+import React, { useState } from 'react'
 import {
 	View,
 	Text,
@@ -8,6 +8,7 @@ import {
 	TouchableOpacity,
 	TextInput,
 	ImageBackground,
+	ActivityIndicator,
 } from 'react-native'
 import * as Yup from 'yup'
 import Toast from 'react-native-toast-message'
@@ -58,6 +59,7 @@ const styles = {
 }
 
 const Login = ({ setIsModalVisible, isModalVisible, navigation }) => {
+	const [isLoading, setIsloading] = useState(false)
 	const formik = useFormik({
 		initialValues: {
 			email: '',
@@ -69,6 +71,7 @@ const Login = ({ setIsModalVisible, isModalVisible, navigation }) => {
 		}),
 		onSubmit: async (x) => {
 			try {
+				setIsloading(true)
 				const res = await fetch(
 					'https://node-api-family-pantry.vercel.app/login',
 					{
@@ -79,7 +82,7 @@ const Login = ({ setIsModalVisible, isModalVisible, navigation }) => {
 						body: JSON.stringify(x),
 					}
 				)
-
+				setIsloading(false)
 				const data = await res.json()
 
 				if (!data.token) {
@@ -123,6 +126,9 @@ const Login = ({ setIsModalVisible, isModalVisible, navigation }) => {
 						placeholder='Password'
 						style={styles.input}
 					/>
+					{isLoading ? (
+						<ActivityIndicator size='large' color='#0d69f3' />
+					) : null}
 					{formik.errors.password && formik.touched.password ? (
 						<Text style={{ color: '#9b2121', marginBottom: 10 }}>
 							{formik.errors.password}
