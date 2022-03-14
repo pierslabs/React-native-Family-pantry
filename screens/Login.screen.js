@@ -4,7 +4,6 @@ import React, { useState } from 'react'
 import {
 	View,
 	Text,
-	Dimensions,
 	TouchableOpacity,
 	TextInput,
 	ImageBackground,
@@ -13,50 +12,7 @@ import {
 import * as Yup from 'yup'
 import Toast from 'react-native-toast-message'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-
-const styles = {
-	image: {
-		flex: 1,
-		justifyContent: 'center',
-		alignItems: 'center',
-	},
-
-	card: {
-		width: Dimensions.get('window').width - 20,
-		backgroundColor: 'rgba(236, 236, 236, 0.981)',
-		padding: 15,
-	},
-	title: {
-		alignSelf: 'center',
-		fontSize: 25,
-		marginBottom: 10,
-	},
-	btnHeaderConatiner: {
-		marginLeft: 'auto',
-		marginTop: 5,
-	},
-	btn: {
-		marginBottom: 10,
-		width: 60,
-		fontSize: 17,
-		color: 'blue',
-	},
-	btnConatiner: {
-		flexDirection: 'row',
-		width: Dimensions.get('window').width - 50,
-		justifyContent: 'space-around',
-		marginBottom: 10,
-		marginTop: 25,
-	},
-	input: {
-		height: 40,
-		borderColor: '#ccc',
-		borderWidth: 1,
-		marginBottom: 10,
-		alignSelf: 'stretch',
-		paddingHorizontal: 5,
-	},
-}
+import { styles } from './Login.style'
 
 const Login = ({ setIsModalVisible, isModalVisible, navigation }) => {
 	const [isLoading, setIsloading] = useState(false)
@@ -66,8 +22,12 @@ const Login = ({ setIsModalVisible, isModalVisible, navigation }) => {
 			password: '',
 		},
 		validationSchema: Yup.object({
-			email: Yup.string().email('Correo invalido').required('requerido'),
-			password: Yup.string().min(6, 'El password debe tener min 6 caracteres'),
+			email: Yup.string()
+				.email('Correo invalido')
+				.required('Este campo es obligatorio'),
+			password: Yup.string()
+				.min(6, 'El password debe tener min 6 caracteres')
+				.required('Este campo es obligatorio'),
 		}),
 		onSubmit: async (x) => {
 			try {
@@ -104,9 +64,10 @@ const Login = ({ setIsModalVisible, isModalVisible, navigation }) => {
 
 	return (
 		<ImageBackground
-			source={require('../assets/background.png')}
+			source={require('../assets/tasks.jpg')}
 			resizeMode='cover'
 			style={styles.image}
+			blurRadius={3}
 		>
 			<View style={styles.infoContainer}>
 				<View style={styles.card}>

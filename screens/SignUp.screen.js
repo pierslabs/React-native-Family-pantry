@@ -4,57 +4,14 @@ import React, { useState } from 'react'
 import {
 	View,
 	Text,
-	Dimensions,
 	TouchableOpacity,
 	TextInput,
 	ImageBackground,
 	ActivityIndicator,
 } from 'react-native'
-
 import * as Yup from 'yup'
 import Toast from 'react-native-toast-message'
-
-const styles = {
-	image: {
-		flex: 1,
-		justifyContent: 'center',
-		alignItems: 'center',
-	},
-	inputContainer: {
-		width: Dimensions.get('window').width - 20,
-
-		backgroundColor: 'rgba(245, 245, 245, 0.974)',
-		padding: 15,
-	},
-	title: {
-		alignSelf: 'center',
-		fontSize: 25,
-		marginBottom: 10,
-	},
-	btnHeaderConatiner: {
-		marginLeft: 'auto',
-	},
-	btn: {
-		marginBottom: 10,
-		width: 50,
-		fontSize: 17,
-		color: 'blue',
-	},
-	btnConatiner: {
-		flexDirection: 'row',
-		width: Dimensions.get('window').width - 50,
-		justifyContent: 'space-around',
-		marginTop: 30,
-	},
-	input: {
-		height: 40,
-		borderColor: '#ccc',
-		borderWidth: 1,
-		marginBottom: 10,
-		alignSelf: 'stretch',
-		paddingHorizontal: 5,
-	},
-}
+import { styles } from './SignUp.style'
 
 const SignUp = ({ setIsModalVisible, isModalVisible, navigation }) => {
 	const [isLoading, setIsloading] = useState(false)
@@ -65,12 +22,16 @@ const SignUp = ({ setIsModalVisible, isModalVisible, navigation }) => {
 			password: '',
 		},
 		validationSchema: Yup.object({
-			name: Yup.string().min(
-				2,
-				'El nombre tiene que tener por lo menos 2 carácteres'
-			),
-			email: Yup.string().email('Correo invalido').required('requerido'),
-			password: Yup.string().min(6, 'El password debe tener min 6 caracteres'),
+			name: Yup.string()
+				.min(2, 'El nombre tiene que tener por lo menos 2 carácteres')
+				.required('Este campo es obligatorio'),
+			email: Yup.string()
+				.email('Correo invalido')
+				.required('requerido')
+				.required('Este campo es obligatorio'),
+			password: Yup.string()
+				.min(6, 'El password debe tener min 6 caracteres')
+				.required('Este campo es obligatorio'),
 		}),
 		onSubmit: async (x) => {
 			setIsloading(true)
@@ -116,6 +77,7 @@ const SignUp = ({ setIsModalVisible, isModalVisible, navigation }) => {
 			source={require('../assets/tasks.jpg')}
 			resizeMode='cover'
 			style={styles.image}
+			blurRadius={3}
 		>
 			<View style={styles.inputContainer}>
 				<Text style={styles.title}>Regístrate</Text>
@@ -125,10 +87,10 @@ const SignUp = ({ setIsModalVisible, isModalVisible, navigation }) => {
 					placeholder='Nombre'
 					style={styles.input}
 				/>
-				<Toast />
 				{formik.errors.name && formik.touched.name ? (
 					<Text style={{ color: '#9b2121' }}>{formik.errors.name}</Text>
 				) : null}
+				<Toast />
 				<TextInput
 					onChangeText={formik.handleChange('email')}
 					value={formik.values.email}
@@ -144,13 +106,13 @@ const SignUp = ({ setIsModalVisible, isModalVisible, navigation }) => {
 					placeholder='Password'
 					style={styles.input}
 				/>
-				{isLoading ? <ActivityIndicator size='large' color='#0d69f3' /> : null}
 				{formik.errors.password && formik.touched.password ? (
 					<Text style={{ color: '#9b2121', marginBottom: 10 }}>
 						{formik.errors.password}
 					</Text>
 				) : null}
 
+				{isLoading ? <ActivityIndicator size='large' color='#0d69f3' /> : null}
 				<View style={styles.btnConatiner}>
 					<TouchableOpacity onPress={formik.handleSubmit}>
 						<Text>Aceptar</Text>

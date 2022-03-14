@@ -20,12 +20,13 @@ const App = () => {
 					options={{
 						title: 'Family tasks',
 						headerStyle: {
-							backgroundColor: '#b3c46c',
+							backgroundColor: '#258a85',
 						},
 						headerTintColor: linear,
 						headerTitleStyle: {
 							fontWeight: 'bold',
 							fontSize: 30,
+							color: '#ddd',
 						},
 					}}
 				/>
@@ -36,12 +37,13 @@ const App = () => {
 					options={{
 						title: 'Regístrate',
 						headerStyle: {
-							backgroundColor: '#b3c46c',
+							backgroundColor: '#258a85',
 						},
 						headerTintColor: linear,
 						headerTitleStyle: {
 							fontWeight: 'bold',
 							fontSize: 20,
+							color: '#ddd',
 						},
 					}}
 				/>
@@ -51,12 +53,13 @@ const App = () => {
 					options={{
 						title: 'Login',
 						headerStyle: {
-							backgroundColor: '#b3c46c',
+							backgroundColor: '#258a85',
 						},
 						headerTintColor: linear,
 						headerTitleStyle: {
 							fontWeight: 'bold',
 							fontSize: 20,
+							color: '#ddd',
 						},
 					}}
 				/>
