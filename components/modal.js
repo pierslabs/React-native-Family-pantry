@@ -1,21 +1,10 @@
 import { View } from 'react-native'
 import React from 'react'
-import Modal from 'react-native-modal'
-
-const styles = {
-	container: {
-		justifyContent: 'center',
-		alignItems: 'center',
-	},
-}
+import { styles } from './stylesComponents/modal .styles'
 
 // eslint-disable-next-line react/prop-types
-const ModalComponent = ({ isModalVisible, children }) => {
-	return (
-		<Modal isVisible={isModalVisible}>
-			<View style={styles.container}>{children}</View>
-		</Modal>
-	)
+const ModalComponent = ({ children }) => {
+	return <View style={styles.modal}>{children}</View>
 }
 
 export default ModalComponent
