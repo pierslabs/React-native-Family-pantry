@@ -1,9 +1,27 @@
-// import { useContext, useEffect, useState } from 'react'
+import React, { createContext, useState, useEffect } from 'react'
 
-// export const userContext = createContext()
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
-// export const UserProvider = ({ children }) => {
-// 	const [isAuth, setIsAuth] = useState(false)
+export const userContext = createContext()
 
-// 	const getAuth = async () => {}
-// }
+// eslint-disable-next-line react/prop-types
+const UserProvider = ({ children }) => {
+	const [userToken, setToken] = useState()
+
+	const getToken = async () => {
+		const token = await AsyncStorage.getItem('token')
+		setToken(token)
+	}
+
+	useEffect(() => {
+		getToken()
+	}, [])
+
+	return (
+		<userContext.Provider value={{ userToken: userToken }}>
+			{children}
+		</userContext.Provider>
+	)
+}
+
+export default UserProvider

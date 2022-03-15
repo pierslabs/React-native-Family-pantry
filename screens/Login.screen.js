@@ -12,7 +12,7 @@ import {
 import * as Yup from 'yup'
 import Toast from 'react-native-toast-message'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { styles } from './Login.style'
+import { styles } from './styles/Login.style'
 
 const Login = ({ setIsModalVisible, isModalVisible, navigation }) => {
 	const [isLoading, setIsloading] = useState(false)

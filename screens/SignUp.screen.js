@@ -11,7 +11,7 @@ import {
 } from 'react-native'
 import * as Yup from 'yup'
 import Toast from 'react-native-toast-message'
-import { styles } from './SignUp.style'
+import { styles } from './styles/SignUp.style'
 
 const SignUp = ({ setIsModalVisible, isModalVisible, navigation }) => {
 	const [isLoading, setIsloading] = useState(false)

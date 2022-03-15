@@ -1,20 +1,11 @@
+import React, { useContext } from 'react'
+import { userContext } from '../context/auth.context'
 import { View, Text } from 'react-native'
-import React, { useEffect, useState } from 'react'
-import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const Pantry = () => {
-	const [token, setToken] = useState()
-
-	const getToken = async () => {
-		const token = await AsyncStorage.getItem('token')
-		setToken(token)
-	}
-
+	const token = useContext(userContext)
 	console.log(token)
 
-	useEffect(() => {
-		getToken()
-	}, [])
 	return (
 		<View>
 			<Text>Pantryu</Text>

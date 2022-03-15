@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import React from 'react'
 import { View, Text, TouchableOpacity, ImageBackground } from 'react-native'
-import { styles } from './Home.style'
+import { styles } from './styles/Home.style'
 
 const Home = ({ navigation }) => {
 	return (
