@@ -3,7 +3,7 @@ import { View, Text, Modal, TouchableOpacity, Alert } from 'react-native'
 import { styles } from './stylesComponents/Modal.styles'
 
 // eslint-disable-next-line react/prop-types
-const ModalComponent = ({ children, visible, visibility }) => {
+const ModalComponent = ({ children, visible, visibility, submit }) => {
 	return (
 		<View style={styles.centeredView}>
 			<Modal
@@ -18,10 +18,7 @@ const ModalComponent = ({ children, visible, visibility }) => {
 				<View style={styles.modalView}>
 					{children}
 					<View style={styles.btnContainer}>
-						<TouchableOpacity
-							style={styles.btn}
-							onPress={() => console.log('añadir cesta')}
-						>
+						<TouchableOpacity style={styles.btn} onPress={submit}>
 							<Text>Añadir</Text>
 						</TouchableOpacity>
 						<TouchableOpacity
