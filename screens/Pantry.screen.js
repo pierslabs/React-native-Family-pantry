@@ -7,6 +7,7 @@ import {
 	FlatList,
 	TextInput,
 	ActivityIndicator,
+	Button,
 } from 'react-native'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
@@ -15,6 +16,7 @@ import ItemComponent from '../components/item'
 import List from '../components/List'
 import Modal from '../components/Modal'
 import { Toast } from 'react-native-toast-message/lib/src/Toast'
+import { ColorPicker } from 'react-native-color-picker'
 
 const Pantry = () => {
 	const user = useContext(userContext)
@@ -22,6 +24,7 @@ const Pantry = () => {
 	const [modalVisible, setModalVisible] = useState(false)
 	const [userPantrys, setPantrys] = useState()
 	const [isLoading, setIsloading] = useState(false)
+	const [selectColor, setSelectColor] = useState(false)
 
 	const formik = useFormik({
 		initialValues: {
@@ -87,61 +90,46 @@ const Pantry = () => {
 
 	return (
 		<View style={styles.container}>
-			{!userPantrys ? (
-				<>
-					<Text style={{ textAlign: 'center', fontSize: 70 }}>
-						aun no tienes ninguna cesta creada
-					</Text>
-					<View>
-						<TouchableOpacity
-							style={styles.btn}
-							onPress={() => setModalVisible(!modalVisible)}
-						>
-							<Text style={styles.btntext}>+</Text>
-						</TouchableOpacity>
-					</View>
-				</>
-			) : (
-				<>
-					<List>
-						<FlatList
-							data={userPantrys}
-							renderItem={({ item }) => (
-								<ItemComponent id={item.id} name={item.name} />
-							)}
-							keyExtractor={(item) => item._id}
-						/>
-					</List>
-					<View>
-						<TouchableOpacity
-							style={styles.btn}
-							onPress={() => setModalVisible(!modalVisible)}
-						>
-							<Text style={styles.btntext}>+</Text>
-						</TouchableOpacity>
-					</View>
-					<Modal
-						visible={modalVisible}
-						visibility={setModalVisible}
-						submit={formik.handleSubmit}
-					>
-						<Text style={styles.text}> Añade una nueva cesta</Text>
-						<TextInput
-							onChangeText={formik.handleChange('name')}
-							value={formik.values.name}
-							placeholder='Nueva cesta'
-							style={styles.input}
-						/>
-						{formik.errors.name && formik.touched.name ? (
-							<Text style={{ color: '#9b2121' }}>{formik.errors.name}</Text>
-						) : null}
-						{isLoading ? (
-							<ActivityIndicator size='large' color='#0d69f3' />
-						) : null}
-					</Modal>
-					<Toast />
-				</>
-			)}
+			<List>
+				<FlatList
+					data={userPantrys}
+					renderItem={({ item }) => (
+						<ItemComponent id={item.id} name={item.name} />
+					)}
+					keyExtractor={(item) => item._id}
+				/>
+			</List>
+			<View>
+				<TouchableOpacity
+					style={styles.btn}
+					onPress={() => setModalVisible(!modalVisible)}
+				>
+					<Text style={styles.btntext}>+</Text>
+				</TouchableOpacity>
+			</View>
+			<Modal
+				visible={modalVisible}
+				visibility={setModalVisible}
+				submit={formik.handleSubmit}
+			>
+				<Text style={styles.text}> Añade una nueva cesta</Text>
+				<TextInput
+					onChangeText={formik.handleChange('name')}
+					value={formik.values.name}
+					placeholder='Nueva cesta'
+					style={styles.input}
+				/>
+				{formik.errors.name && formik.touched.name ? (
+					<Text style={{ color: '#9b2121' }}>{formik.errors.name}</Text>
+				) : null}
+				{isLoading ? <ActivityIndicator size='large' color='#0d69f3' /> : null}
+				<Text> selecciona el color de la lista</Text>
+				<ColorPicker
+					onColorSelected={(color) => alert(`Color selected: ${color}`)}
+					style={{ flex: 1, width: 120, height: 100 }}
+				/>
+			</Modal>
+			<Toast />
 		</View>
 	)
 }

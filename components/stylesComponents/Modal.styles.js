@@ -4,6 +4,7 @@ export const styles = {
 		alignItems: 'center',
 	},
 	modalView: {
+		height: 400,
 		margin: 20,
 		backgroundColor: 'white',
 		borderRadius: 20,
