@@ -7,7 +7,6 @@ import {
 	FlatList,
 	TextInput,
 	ActivityIndicator,
-	Button,
 } from 'react-native'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
@@ -16,15 +15,13 @@ import ItemComponent from '../components/item'
 import List from '../components/List'
 import Modal from '../components/Modal'
 import { Toast } from 'react-native-toast-message/lib/src/Toast'
-import { ColorPicker } from 'react-native-color-picker'
+import useFetch from '../hooks/useFetch'
 
-const Pantry = () => {
+// eslint-disable-next-line react/prop-types
+const Pantry = ({ navigation }) => {
 	const user = useContext(userContext)
-
 	const [modalVisible, setModalVisible] = useState(false)
-	const [userPantrys, setPantrys] = useState()
 	const [isLoading, setIsloading] = useState(false)
-	const [selectColor, setSelectColor] = useState(false)
 
 	const formik = useFormik({
 		initialValues: {
@@ -69,34 +66,34 @@ const Pantry = () => {
 		},
 	})
 
-	const getPantrys = async () => {
-		const pantrys = await fetch(
-			'https://node-api-family-pantry.vercel.app/pantrys',
-			{
-				method: 'GET',
-				headers: {
-					'content-type': 'application/json',
-					Authorization: `${user.userToken}`,
-				},
-			}
-		)
-		const data = await pantrys.json()
-		setPantrys(data)
-	}
+	const getPantrys = useFetch(
+		'https://node-api-family-pantry.vercel.app/pantrys',
+		{
+			method: 'GET',
+			headers: {
+				'content-type': 'application/json',
+				Authorization: `${user.userToken}`,
+			},
+		}
+	)
 
 	useEffect(() => {
-		getPantrys()
+		// getPantrys()
 	}, [isLoading])
 
 	return (
 		<View style={styles.container}>
 			<List>
 				<FlatList
-					data={userPantrys}
-					renderItem={({ item }) => (
-						<ItemComponent id={item.id} name={item.name} />
-					)}
+					data={getPantrys.data}
 					keyExtractor={(item) => item._id}
+					renderItem={({ item }) => (
+						<ItemComponent
+							id={item._id}
+							name={item.name}
+							navigation={navigation}
+						/>
+					)}
 				/>
 			</List>
 			<View>
@@ -123,11 +120,6 @@ const Pantry = () => {
 					<Text style={{ color: '#9b2121' }}>{formik.errors.name}</Text>
 				) : null}
 				{isLoading ? <ActivityIndicator size='large' color='#0d69f3' /> : null}
-				<Text> selecciona el color de la lista</Text>
-				<ColorPicker
-					onColorSelected={(color) => alert(`Color selected: ${color}`)}
-					style={{ flex: 1, width: 120, height: 100 }}
-				/>
 			</Modal>
 			<Toast />
 		</View>
