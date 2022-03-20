@@ -8,10 +8,8 @@ import {
 	ActivityIndicator,
 	TextInput,
 } from 'react-native'
-
 import { userContext } from '../context/auth.context'
 import List from '../components/List'
-import ItemComponent from '../components/item'
 import Modal from '../components/Modal'
 import { Toast } from 'react-native-toast-message/lib/src/Toast'
 import { styles } from './styles/Pantry.styles'
@@ -57,7 +55,7 @@ const Products = ({ navigation, route }) => {
 				getPantry()
 				return Toast.show({
 					type: 'success',
-					text1: `Nueva cesta ${data.name} añadida!!`,
+					text1: `Nueva producto ${data.name} añadido!!`,
 					visibilityTime: 2000,
 				})
 			} catch (error) {
@@ -101,7 +99,12 @@ const Products = ({ navigation, route }) => {
 						<FlatList
 							data={products}
 							keyExtractor={(item) => item._id}
-							renderItem={({ item }) => <ItemComponent name={item.name} />}
+							renderItem={({ item }) => (
+								<View style={styles.productContanier}>
+									<Text style={styles.cuantity}>{item.name}</Text>
+									<Text style={styles.cuantity}>{item.cuantity}</Text>
+								</View>
+							)}
 						/>
 					</List>
 					<View>
@@ -117,7 +120,7 @@ const Products = ({ navigation, route }) => {
 						visibility={setModalVisible}
 						submit={formik.handleSubmit}
 					>
-						<Text style={styles.text}> Añade una nueva cesta</Text>
+						<Text style={styles.text}> Añade un producto</Text>
 						<TextInput
 							onChangeText={formik.handleChange('name')}
 							value={formik.values.name}

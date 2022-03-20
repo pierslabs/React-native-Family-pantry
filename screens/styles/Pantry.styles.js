@@ -1,3 +1,5 @@
+import { Dimensions } from 'react-native'
+
 export const styles = {
 	container: {
 		flex: 1,
@@ -52,5 +54,25 @@ export const styles = {
 	textDelete: {
 		fontSize: 20,
 		color: '#eee',
+	},
+	productContanier: {
+		flexDirection: 'row',
+		justifyContent: 'space-around',
+		alignItems: 'flex-start',
+		width: Dimensions.get('window').width - 10,
+		borderBottomWidth: 1,
+		borderColor: '#444',
+		paddingTop: 10,
+		backgroundColor: '#679',
+		margin: 5,
+	},
+	cuantity: {
+		fontSize: 25,
+		textShadowColor: '#000',
+		textShadowOffset: { width: 0, height: 0 },
+		textShadowRadius: 10,
+		color: '#fff',
+		width: 150,
+		textAlign: 'center',
 	},
 }
