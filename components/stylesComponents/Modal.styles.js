@@ -4,7 +4,6 @@ export const styles = {
 		alignItems: 'center',
 	},
 	modalView: {
-		height: 400,
 		margin: 20,
 		backgroundColor: 'white',
 		borderRadius: 20,
@@ -20,7 +19,7 @@ export const styles = {
 		elevation: 5,
 	},
 	btnContainer: {
-		marginTop: 20,
+		marginTop: 40,
 		flexDirection: 'row',
 		justifyContent: 'space-around',
 		alignItems: 'center',

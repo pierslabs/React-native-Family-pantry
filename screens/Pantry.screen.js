@@ -15,12 +15,14 @@ import ItemComponent from '../components/item'
 import List from '../components/List'
 import Modal from '../components/Modal'
 import { Toast } from 'react-native-toast-message/lib/src/Toast'
-import useFetch from '../hooks/useFetch'
 
 // eslint-disable-next-line react/prop-types
 const Pantry = ({ navigation }) => {
 	const user = useContext(userContext)
+	const [pantrys, setPantrys] = useState()
+	const [pantryId, setPantryId] = useState()
 	const [modalVisible, setModalVisible] = useState(false)
+	const [modalDeleteVisible, setModalDeleteVisible] = useState(false)
 	const [isLoading, setIsloading] = useState(false)
 
 	const formik = useFormik({
@@ -31,7 +33,6 @@ const Pantry = ({ navigation }) => {
 			name: Yup.string().required('Este campo es obligatorio'),
 		}),
 		onSubmit: async (x) => {
-			console.log(user.userToken)
 			try {
 				setIsloading(true)
 				const res = await fetch(
@@ -50,6 +51,7 @@ const Pantry = ({ navigation }) => {
 
 				setModalVisible(false)
 				formik.values.name = ''
+				getPantrys()
 
 				return Toast.show({
 					type: 'success',
@@ -66,40 +68,90 @@ const Pantry = ({ navigation }) => {
 		},
 	})
 
-	const getPantrys = useFetch(
-		'https://node-api-family-pantry.vercel.app/pantrys',
-		{
-			method: 'GET',
-			headers: {
-				'content-type': 'application/json',
-				Authorization: `${user.userToken}`,
-			},
+	const deletePantry = async () => {
+		try {
+			setIsloading(true)
+			await fetch(
+				`https://node-api-family-pantry.vercel.app/pantry/${pantryId}`,
+				{
+					method: 'DELETE',
+					headers: {
+						'content-type': 'application/json',
+						Authorization: `${user.userToken}`,
+					},
+				}
+			)
+			setIsloading(false)
+
+			setModalDeleteVisible(false)
+			getPantrys()
+
+			return Toast.show({
+				type: 'success',
+				text1: `LA cesta se ha eliminado correctamente!`,
+				visibilityTime: 2000,
+			})
+		} catch (error) {
+			return Toast.show({
+				type: 'error',
+				text1: `Hemos tenido un error`,
+				visibilityTime: 2000,
+			})
 		}
-	)
+	}
+
+	const getPantrys = async () => {
+		const pantrys = await fetch(
+			'https://node-api-family-pantry.vercel.app/pantrys',
+			{
+				method: 'GET',
+				headers: {
+					'content-type': 'application/json',
+					Authorization: `${user.userToken}`,
+				},
+			}
+		)
+
+		const data = await pantrys.json()
+		setPantrys(data)
+	}
 
 	useEffect(() => {
-		// getPantrys()
+		getPantrys()
 	}, [isLoading])
 
 	return (
 		<View style={styles.container}>
 			<List>
 				<FlatList
-					data={getPantrys.data}
+					data={pantrys}
 					keyExtractor={(item) => item._id}
 					renderItem={({ item }) => (
 						<ItemComponent
 							id={item._id}
 							name={item.name}
 							navigation={navigation}
+							onLongPress={() => {
+								setPantryId(item._id)
+								setModalDeleteVisible(!modalDeleteVisible)
+							}}
 						/>
 					)}
 				/>
 			</List>
+
+			<Modal
+				visible={modalDeleteVisible}
+				visibility={setModalDeleteVisible}
+				submit={deletePantry}
+			>
+				<Text>Quieres eliminar la cesta </Text>
+				{isLoading ? <ActivityIndicator size='large' color='#0d69f3' /> : null}
+			</Modal>
 			<View>
 				<TouchableOpacity
 					style={styles.btn}
-					onPress={() => setModalVisible(!modalVisible)}
+					onPress={() => setModalVisible(!modalDeleteVisible)}
 				>
 					<Text style={styles.btntext}>+</Text>
 				</TouchableOpacity>

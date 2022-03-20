@@ -27,58 +27,66 @@ const App = () => {
 	return (
 		<UserProvider>
 			<NavigationContainer>
-				<Stack.Navigator>
-					<Stack.Screen
-						name='Home'
-						component={Home}
-						options={{
-							title: 'Family tasks',
-							headerStyle: {
-								backgroundColor: '#258a85',
-							},
-							headerTintColor: linear,
-							headerTitleStyle: {
-								fontWeight: 'bold',
-								fontSize: 30,
-								color: '#ddd',
-							},
-						}}
-					/>
-					<Stack.Screen name='Pantry' component={Pantry} />
-					<Stack.Screen name='Products' component={Products} />
-					<Stack.Screen
-						name='SignUp'
-						component={SignUp}
-						options={{
-							title: 'Regístrate',
-							headerStyle: {
-								backgroundColor: '#258a85',
-							},
-							headerTintColor: linear,
-							headerTitleStyle: {
-								fontWeight: 'bold',
-								fontSize: 20,
-								color: '#ddd',
-							},
-						}}
-					/>
-					<Stack.Screen
-						name='Login'
-						component={Login}
-						options={{
-							title: 'Login',
-							headerStyle: {
-								backgroundColor: '#258a85',
-							},
-							headerTintColor: linear,
-							headerTitleStyle: {
-								fontWeight: 'bold',
-								fontSize: 20,
-								color: '#ddd',
-							},
-						}}
-					/>
-				</Stack.Navigator>
+				{token ? (
+					<Stack.Navigator>
+						<Stack.Screen name='Pantry' component={Pantry} />
+						<Stack.Screen name='Products' component={Products} />
+					</Stack.Navigator>
+				) : (
+					<Stack.Navigator>
+						<Stack.Screen
+							name='Home'
+							component={Home}
+							options={{
+								title: 'Family tasks',
+								headerStyle: {
+									backgroundColor: '#258a85',
+								},
+								headerTintColor: linear,
+								headerTitleStyle: {
+									fontWeight: 'bold',
+									fontSize: 30,
+									color: '#ddd',
+								},
+							}}
+						/>
+						<Stack.Screen name='Pantry' component={Pantry} />
+						<Stack.Screen name='Products' component={Products} />
+
+						<Stack.Screen
+							name='SignUp'
+							component={SignUp}
+							options={{
+								title: 'Regístrate',
+								headerStyle: {
+									backgroundColor: '#258a85',
+								},
+								headerTintColor: linear,
+								headerTitleStyle: {
+									fontWeight: 'bold',
+									fontSize: 20,
+									color: '#ddd',
+								},
+							}}
+						/>
+						<Stack.Screen
+							name='Login'
+							component={Login}
+							options={{
+								title: 'Login',
+								headerStyle: {
+									backgroundColor: '#258a85',
+								},
+								headerTintColor: linear,
+								headerTitleStyle: {
+									fontWeight: 'bold',
+									fontSize: 20,
+									color: '#ddd',
+								},
+							}}
+						/>
+					</Stack.Navigator>
+				)}
 			</NavigationContainer>
 		</UserProvider>
 	)

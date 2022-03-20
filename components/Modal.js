@@ -19,13 +19,13 @@ const ModalComponent = ({ children, visible, visibility, submit }) => {
 					{children}
 					<View style={styles.btnContainer}>
 						<TouchableOpacity style={styles.btn} onPress={submit}>
-							<Text>Añadir</Text>
+							<Text>Si</Text>
 						</TouchableOpacity>
 						<TouchableOpacity
 							style={styles.btn}
 							onPress={() => visibility(!visible)}
 						>
-							<Text>Cerrar</Text>
+							<Text>Cerrar ventana</Text>
 						</TouchableOpacity>
 					</View>
 				</View>

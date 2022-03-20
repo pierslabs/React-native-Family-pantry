@@ -38,4 +38,19 @@ export const styles = {
 		fontSize: 20,
 		marginBottom: 10,
 	},
+	btnDeleteContainer: {
+		flexDirection: 'row',
+		marginLeft: 'auto',
+		margin: 10,
+		height: 40,
+		alignItems: 'center',
+		backgroundColor: '#b83e3e',
+		paddingHorizontal: 10,
+		padding: 5,
+		borderRadius: 5,
+	},
+	textDelete: {
+		fontSize: 20,
+		color: '#eee',
+	},
 }

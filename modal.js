@@ -4,7 +4,6 @@ import Modal from 'react-native-modal'
 
 // eslint-disable-next-line react/prop-types
 const ModalComponent = ({ isModalVisible, setIsModalVisible }) => {
-	console.log(isModalVisible)
 	return (
 		<Modal isVisible={isModalVisible}>
 			<View style={{ flex: 1 }}>
