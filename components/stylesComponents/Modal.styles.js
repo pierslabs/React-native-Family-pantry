@@ -25,4 +25,5 @@ export const styles = {
 		alignItems: 'center',
 		width: 400,
 	},
+	text: { width: 150, fontSize: 20 },
 }

@@ -1,5 +1,7 @@
 /* eslint-disable react/prop-types */
-import React, { useContext, useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+
 import {
 	View,
 	Text,
@@ -7,9 +9,11 @@ import {
 	FlatList,
 	ActivityIndicator,
 	TextInput,
+	ImageBackground,
 } from 'react-native'
-import { userContext } from '../context/auth.context'
 import List from '../components/List'
+import ItemComponent from '../components/item'
+
 import Modal from '../components/Modal'
 import { Toast } from 'react-native-toast-message/lib/src/Toast'
 import { styles } from './styles/Pantry.styles'
@@ -18,10 +22,11 @@ import * as Yup from 'yup'
 
 const Products = ({ navigation, route }) => {
 	const { id } = route.params
-	const user = useContext(userContext)
 	const [products, setProduct] = useState()
+	const [productId, setProductId] = useState()
 	const [modalVisible, setModalVisible] = useState(false)
-	const [isLoading, setIsloading] = useState(false)
+	const [isLoading, setIsloading] = useState(true)
+	const [modalDeleteVisible, setModalDeleteVisible] = useState(false)
 
 	const formik = useFormik({
 		initialValues: {
@@ -33,6 +38,8 @@ const Products = ({ navigation, route }) => {
 			cuantity: Yup.string().required('Este campo es obligatorio'),
 		}),
 		onSubmit: async (x) => {
+			const token = await AsyncStorage.getItem('token')
+			if (!token) navigation.navigate('Home')
 			try {
 				setIsloading(true)
 				const res = await fetch(
@@ -41,7 +48,7 @@ const Products = ({ navigation, route }) => {
 						method: 'POST',
 						headers: {
 							'content-type': 'application/json',
-							Authorization: `${user.userToken}`,
+							Authorization: token,
 						},
 						body: JSON.stringify(x),
 					}
@@ -69,14 +76,15 @@ const Products = ({ navigation, route }) => {
 	})
 
 	const getPantry = async () => {
-		setIsloading(true)
+		const token = await AsyncStorage.getItem('token')
+		if (!token) navigation.navigate('Home')
 		const getPantry = await fetch(
 			`https://node-api-family-pantry.vercel.app/pantry/${id}`,
 			{
 				method: 'GET',
 				headers: {
 					'content-type': 'application/json',
-					Authorization: `${user.userToken}`,
+					Authorization: token,
 				},
 			}
 		)
@@ -85,28 +93,90 @@ const Products = ({ navigation, route }) => {
 		setIsloading(false)
 	}
 
+	const deletePantry = async () => {
+		const token = await AsyncStorage.getItem('token')
+		if (!token) navigation.navigate('Home')
+		try {
+			setIsloading(true)
+			await fetch(
+				`https://node-api-family-pantry.vercel.app/product/${productId}`,
+				{
+					method: 'DELETE',
+					headers: {
+						'content-type': 'application/json',
+						Authorization: token,
+					},
+				}
+			)
+			setIsloading(false)
+
+			setModalDeleteVisible(false)
+			getPantry()
+
+			return Toast.show({
+				type: 'success',
+				text1: `El producto se ha eliminado correctamente!`,
+				visibilityTime: 2000,
+			})
+		} catch (error) {
+			return Toast.show({
+				type: 'error',
+				text1: `Hemos tenido un error`,
+				visibilityTime: 2000,
+			})
+		}
+	}
+
 	useEffect(() => {
 		getPantry()
 	}, [])
 
 	return (
 		<View style={styles.container}>
-			{getPantry.loading ? (
+			{isLoading ? (
 				<ActivityIndicator size='large' color='#0d69f3' />
 			) : (
-				<>
+				<ImageBackground
+					source={require('../assets/taskswallpaper.jpg')}
+					resizeMode='cover'
+					style={styles.image}
+				>
 					<List>
 						<FlatList
 							data={products}
 							keyExtractor={(item) => item._id}
 							renderItem={({ item }) => (
 								<View style={styles.productContanier}>
-									<Text style={styles.cuantity}>{item.name}</Text>
-									<Text style={styles.cuantity}>{item.cuantity}</Text>
+									<ItemComponent
+										width={250}
+										name={item.name}
+										onLongPress={() => {
+											setProductId(item._id)
+											setModalDeleteVisible(!modalDeleteVisible)
+										}}
+									/>
+									<ItemComponent
+										width={130}
+										name={item.cuantity}
+										onLongPress={() => {
+											setProductId(item._id)
+											setModalDeleteVisible(!modalDeleteVisible)
+										}}
+									/>
 								</View>
 							)}
 						/>
 					</List>
+					<Modal
+						visible={modalDeleteVisible}
+						visibility={setModalDeleteVisible}
+						submit={deletePantry}
+					>
+						<Text style={styles.text}>Quieres eliminar el Producto ?</Text>
+						{isLoading ? (
+							<ActivityIndicator size='large' color='#0d69f3' />
+						) : null}
+					</Modal>
 					<View>
 						<TouchableOpacity
 							style={styles.btn}
@@ -144,7 +214,7 @@ const Products = ({ navigation, route }) => {
 						) : null}
 					</Modal>
 					<Toast />
-				</>
+				</ImageBackground>
 			)}
 		</View>
 	)

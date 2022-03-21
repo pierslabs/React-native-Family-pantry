@@ -29,8 +29,38 @@ const App = () => {
 			<NavigationContainer>
 				{token ? (
 					<Stack.Navigator>
-						<Stack.Screen name='Pantry' component={Pantry} />
-						<Stack.Screen name='Products' component={Products} />
+						<Stack.Screen
+							name='Pantry'
+							component={Pantry}
+							options={{
+								title: 'Family Lists',
+								headerStyle: {
+									backgroundColor: '#258a85',
+								},
+								headerTintColor: linear,
+								headerTitleStyle: {
+									fontWeight: 'bold',
+									fontSize: 30,
+									color: '#ddd',
+								},
+							}}
+						/>
+						<Stack.Screen
+							name='Products'
+							component={Products}
+							options={{
+								title: 'Tasks List',
+								headerStyle: {
+									backgroundColor: '#258a85',
+								},
+								headerTintColor: linear,
+								headerTitleStyle: {
+									fontWeight: 'bold',
+									fontSize: 30,
+									color: '#ddd',
+								},
+							}}
+						/>
 					</Stack.Navigator>
 				) : (
 					<Stack.Navigator>
@@ -50,7 +80,22 @@ const App = () => {
 								},
 							}}
 						/>
-						<Stack.Screen name='Pantry' component={Pantry} />
+						<Stack.Screen
+							name='Pantry'
+							component={Pantry}
+							options={{
+								title: 'Family Tasks',
+								headerStyle: {
+									backgroundColor: '#258a85',
+								},
+								headerTintColor: linear,
+								headerTitleStyle: {
+									fontWeight: 'bold',
+									fontSize: 30,
+									color: '#ddd',
+								},
+							}}
+						/>
 						<Stack.Screen name='Products' component={Products} />
 
 						<Stack.Screen

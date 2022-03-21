@@ -1,6 +1,7 @@
 import React from 'react'
-import { View, Text, Modal, TouchableOpacity, Alert } from 'react-native'
+import { View, Modal, TouchableOpacity, Alert } from 'react-native'
 import { styles } from './stylesComponents/Modal.styles'
+import { Ionicons } from '@expo/vector-icons'
 
 // eslint-disable-next-line react/prop-types
 const ModalComponent = ({ children, visible, visibility, submit }) => {
@@ -19,13 +20,17 @@ const ModalComponent = ({ children, visible, visibility, submit }) => {
 					{children}
 					<View style={styles.btnContainer}>
 						<TouchableOpacity style={styles.btn} onPress={submit}>
-							<Text>Si</Text>
+							<Ionicons
+								name='md-checkmark-circle-outline'
+								size={45}
+								color='#21eb0f'
+							/>
 						</TouchableOpacity>
 						<TouchableOpacity
 							style={styles.btn}
 							onPress={() => visibility(!visible)}
 						>
-							<Text>Cerrar ventana</Text>
+							<Ionicons name='md-exit' size={45} color='#c53a21' />
 						</TouchableOpacity>
 					</View>
 				</View>

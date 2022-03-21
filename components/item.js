@@ -4,16 +4,21 @@ import React from 'react'
 import { styles } from './stylesComponents/item.styles'
 
 // eslint-disable-next-line react/prop-types
-const ItemComponent = ({ name, id, navigation, onLongPress, width }) => {
+const ItemComponent = ({
+	name,
+	id,
+	navigation,
+	onLongPress,
+	width,
+	onPress,
+}) => {
 	return (
 		<View style={styles.container}>
 			<TouchableOpacity
-				onPress={() => navigation.navigate('Products', { id: id })}
+				onPress={() => onPress()}
 				onLongPress={() => onLongPress()}
 			>
-				<Text style={styles.text} width={width}>
-					{name}
-				</Text>
+				<Text style={[styles.text, { width: width }]}>{name}</Text>
 			</TouchableOpacity>
 		</View>
 	)

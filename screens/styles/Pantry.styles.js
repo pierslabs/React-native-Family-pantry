@@ -1,5 +1,3 @@
-import { Dimensions } from 'react-native'
-
 export const styles = {
 	container: {
 		flex: 1,
@@ -13,11 +11,11 @@ export const styles = {
 		justifyContent: 'center',
 		alignItems: 'center',
 		backgroundColor: '#06f',
-		width: 55,
-		height: 55,
+		width: 75,
+		height: 75,
 		borderRadius: 50,
-		borderWidth: 3,
-		borderColor: '#aaa',
+		borderWidth: 7,
+		borderColor: '#44e736',
 	},
 	btntext: {
 		fontSize: 30,
@@ -57,22 +55,12 @@ export const styles = {
 	},
 	productContanier: {
 		flexDirection: 'row',
-		justifyContent: 'space-around',
-		alignItems: 'flex-start',
-		width: Dimensions.get('window').width - 10,
-		borderBottomWidth: 1,
-		borderColor: '#444',
-		paddingTop: 10,
-		backgroundColor: '#679',
-		margin: 5,
+		justifyContent: 'center',
+		alignItems: 'center',
 	},
-	cuantity: {
-		fontSize: 25,
-		textShadowColor: '#000',
-		textShadowOffset: { width: 0, height: 0 },
-		textShadowRadius: 10,
-		color: '#fff',
-		width: 150,
-		textAlign: 'center',
+	image: {
+		flex: 1,
+		justifyContent: 'center',
+		alignItems: 'center',
 	},
 }

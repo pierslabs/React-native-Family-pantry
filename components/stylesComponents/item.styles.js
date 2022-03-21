@@ -1,19 +1,15 @@
-import { Dimensions } from 'react-native'
-
-export const styles = {
+import { StyleSheet } from 'react-native'
+export const styles = StyleSheet.create({
 	container: {
-		flex: 1,
 		justifyContent: 'center',
-		alignItem: 'center',
+		backgroundColor: '#ca732b',
+		height: 50,
+		margin: 5,
+		borderRadius: 5,
 	},
 	text: {
-		fontSize: 30,
-		width: Dimensions.get('window').width - 30,
-		height: 60,
-		backgroundColor: '#187',
-		margin: 5,
+		fontSize: 25,
 		textAlign: 'center',
-		borderRadius: 15,
-		color: '#ccc',
+		color: '#f5f3f3',
 	},
-}
+})
