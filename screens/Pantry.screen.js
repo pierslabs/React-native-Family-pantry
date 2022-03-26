@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 import React, { useState, useEffect } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import { Ionicons } from '@expo/vector-icons'
 import {
 	View,
 	Text,
@@ -18,6 +19,7 @@ import ItemComponent from '../components/item'
 import List from '../components/List'
 import Modal from '../components/Modal'
 import { Toast } from 'react-native-toast-message/lib/src/Toast'
+import { linear } from 'react-native/Libraries/Animated/Easing'
 
 // eslint-disable-next-line react/prop-types
 const Pantry = ({ navigation }) => {
@@ -48,10 +50,6 @@ const Pantry = ({ navigation }) => {
 		setIsloading(false)
 	}
 
-	useEffect(() => {
-		getPantrys()
-	}, [])
-
 	const formik = useFormik({
 		initialValues: {
 			name: '',
@@ -77,10 +75,9 @@ const Pantry = ({ navigation }) => {
 				setIsloading(false)
 				const data = await res.json()
 
-				setModalVisible(false)
 				formik.values.name = ''
 				getPantrys()
-
+				setModalVisible(false)
 				return Toast.show({
 					type: 'success',
 					text1: `Nueva cesta ${data.name} añadida!!`,
@@ -113,10 +110,9 @@ const Pantry = ({ navigation }) => {
 			)
 			setIsloading(false)
 
-			setModalDeleteVisible(false)
 			getPantrys()
-
-			return Toast.show({
+			setModalDeleteVisible(false)
+			Toast.show({
 				type: 'success',
 				text1: `La cesta se ha eliminado correctamente!`,
 				visibilityTime: 2000,
@@ -130,17 +126,61 @@ const Pantry = ({ navigation }) => {
 		}
 	}
 
+	useEffect(() => {
+		navigation.setOptions({
+			title: 'Mis Listas',
+			headerStyle: {
+				backgroundColor: '#258a85',
+			},
+			headerTintColor: linear,
+			headerTitleStyle: {
+				fontWeight: 'bold',
+				fontSize: 30,
+				color: '#ddd',
+			},
+			headerRight: () => (
+				<TouchableOpacity
+					onPress={async () => {
+						await AsyncStorage.removeItem('token')
+						navigation.navigate('Home')
+					}}
+					style={{
+						flexDirection: 'row',
+						alignItems: 'flex-end',
+						justifyContent: 'space-around',
+						width: 100,
+					}}
+				>
+					<Text
+						style={{
+							color: '#c5ad21',
+							fontSize: 20,
+							lineHeight: 20,
+						}}
+					>
+						Salir
+					</Text>
+
+					<Ionicons name='md-beer' size={30} color='#c5ad21' />
+				</TouchableOpacity>
+			),
+		})
+		getPantrys()
+	}, [])
+	console.log(pantrys)
 	return (
 		<View style={styles.container}>
-			{isLoading ? (
-				<ActivityIndicator size='large' color='#0d69f3' />
-			) : (
-				<ImageBackground
-					source={require('../assets/taskswallpaper.jpg')}
-					resizeMode='cover'
-					style={styles.image}
-				>
-					<List>
+			<ImageBackground
+				source={require('../assets/taskswallpaper.jpg')}
+				resizeMode='cover'
+				style={styles.image}
+			>
+				<List>
+					{isLoading ? (
+						<View style={styles.loader}>
+							<ActivityIndicator size={80} color='#2262d8' />
+						</View>
+					) : (
 						<FlatList
 							data={pantrys}
 							keyExtractor={(item) => item._id}
@@ -149,9 +189,12 @@ const Pantry = ({ navigation }) => {
 									name={item.name}
 									navigation={navigation}
 									onPress={() =>
-										navigation.navigate('Products', { id: item._id })
+										navigation.navigate('Products', {
+											id: item._id,
+											name: item.name,
+										})
 									}
-									width={Dimensions.get('window').width - 20}
+									width={Dimensions.get('window').width - 30}
 									onLongPress={() => {
 										setPantryId(item._id)
 										setModalDeleteVisible(!modalDeleteVisible)
@@ -159,47 +202,49 @@ const Pantry = ({ navigation }) => {
 								/>
 							)}
 						/>
-					</List>
-					<Modal
-						visible={modalDeleteVisible}
-						visibility={setModalDeleteVisible}
-						submit={deletePantry}
+					)}
+				</List>
+				<Modal
+					visible={modalDeleteVisible}
+					visibility={setModalDeleteVisible}
+					submit={deletePantry}
+				>
+					<Text style={styles.text}>Quieres eliminar esta cesta? </Text>
+					{/* {isLoading ? (
+						<View style={styles.loader}>
+							<ActivityIndicator size={80} color='#2262d8' />
+						</View>
+					) : null} */}
+				</Modal>
+				<View style={styles.btnConatiner}>
+					<TouchableOpacity
+						style={styles.btn}
+						onPress={() => setModalVisible(!modalDeleteVisible)}
 					>
-						<Text style={styles.text}>Quieres eliminar esta cesta? </Text>
-						{isLoading ? (
-							<ActivityIndicator size='large' color='#0d69f3' />
-						) : null}
-					</Modal>
-					<View>
-						<TouchableOpacity
-							style={styles.btn}
-							onPress={() => setModalVisible(!modalDeleteVisible)}
-						>
-							<Text style={styles.btntext}>+</Text>
-						</TouchableOpacity>
-					</View>
-					<Modal
-						visible={modalVisible}
-						visibility={setModalVisible}
-						submit={formik.handleSubmit}
-					>
-						<Text style={styles.text}> Añade una nueva cesta</Text>
-						<TextInput
-							onChangeText={formik.handleChange('name')}
-							value={formik.values.name}
-							placeholder='Nueva cesta'
-							style={styles.input}
-						/>
-						{formik.errors.name && formik.touched.name ? (
-							<Text style={{ color: '#9b2121' }}>{formik.errors.name}</Text>
-						) : null}
-						{isLoading ? (
-							<ActivityIndicator size='large' color='#0d69f3' />
-						) : null}
-					</Modal>
-					<Toast />
-				</ImageBackground>
-			)}
+						<Text style={styles.btntext}>+</Text>
+					</TouchableOpacity>
+				</View>
+				<Modal
+					visible={modalVisible}
+					visibility={setModalVisible}
+					submit={formik.handleSubmit}
+				>
+					<Text style={styles.text}> Añade una nueva cesta</Text>
+					<TextInput
+						onChangeText={formik.handleChange('name')}
+						value={formik.values.name}
+						placeholder='Nueva cesta'
+						style={styles.input}
+					/>
+					{formik.errors.name && formik.touched.name ? (
+						<Text style={{ color: '#9b2121' }}>{formik.errors.name}</Text>
+					) : null}
+					{isLoading ? (
+						<ActivityIndicator size='large' color='#0d69f3' />
+					) : null}
+				</Modal>
+				<Toast />
+			</ImageBackground>
 		</View>
 	)
 }

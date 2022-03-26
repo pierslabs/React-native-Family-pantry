@@ -6,16 +6,26 @@ export const styles = {
 	},
 
 	btn: {
-		marginLeft: 'auto',
 		margin: 20,
 		justifyContent: 'center',
 		alignItems: 'center',
 		backgroundColor: '#06f',
-		width: 75,
-		height: 75,
+		width: 85,
+		height: 85,
 		borderRadius: 50,
-		borderWidth: 7,
+		borderWidth: 5,
 		borderColor: '#44e736',
+	},
+	btnConatiner: {
+		margin: 10,
+		justifyContent: 'center',
+		alignItems: 'center',
+		backgroundColor: '#06f',
+		width: 95,
+		height: 95,
+		borderRadius: 50,
+		borderWidth: 11,
+		borderColor: '#ffffff',
 	},
 	btntext: {
 		fontSize: 30,
@@ -62,5 +72,9 @@ export const styles = {
 		flex: 1,
 		justifyContent: 'center',
 		alignItems: 'center',
+	},
+	loader: {
+		backgroundColor: '#eaf5ea',
+		borderRadius: 50,
 	},
 }

@@ -1,12 +1,24 @@
 /* eslint-disable react/prop-types */
+/* eslint-disable react/prop-types */
 import { View, Text, TouchableOpacity } from 'react-native'
 import React from 'react'
 import { styles } from './stylesComponents/item.styles'
 
 // eslint-disable-next-line react/prop-types
-const ItemComponent = ({ name, onLongPress, width, onPress, touch, item }) => {
+const ProductComponent = ({
+	name,
+	onLongPress,
+	width,
+	onPress,
+	selectItem,
+}) => {
 	return (
-		<View style={styles.container}>
+		<View
+			style={[
+				styles.container,
+				{ backgroundColor: selectItem ? '#9e3a3a' : '#21cc46' },
+			]}
+		>
 			<TouchableOpacity
 				onPress={() => onPress()}
 				onLongPress={() => onLongPress()}
@@ -26,4 +38,4 @@ const ItemComponent = ({ name, onLongPress, width, onPress, touch, item }) => {
 	)
 }
 
-export default ItemComponent
+export default ProductComponent

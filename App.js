@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react'
+import { TouchableOpacity, Text } from 'react-native'
+import { Ionicons } from '@expo/vector-icons'
 import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import UserProvider from './context/auth.context'
@@ -9,6 +11,7 @@ import Pantry from './screens/Pantry.screen'
 import { linear } from 'react-native/Libraries/Animated/Easing'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import Products from './screens/Products.screen'
+
 // creamos el stack navigator
 
 const Stack = createNativeStackNavigator()
@@ -29,38 +32,8 @@ const App = () => {
 			<NavigationContainer>
 				{token ? (
 					<Stack.Navigator>
-						<Stack.Screen
-							name='Pantry'
-							component={Pantry}
-							options={{
-								title: 'Family Lists',
-								headerStyle: {
-									backgroundColor: '#258a85',
-								},
-								headerTintColor: linear,
-								headerTitleStyle: {
-									fontWeight: 'bold',
-									fontSize: 30,
-									color: '#ddd',
-								},
-							}}
-						/>
-						<Stack.Screen
-							name='Products'
-							component={Products}
-							options={{
-								title: 'Tasks List',
-								headerStyle: {
-									backgroundColor: '#258a85',
-								},
-								headerTintColor: linear,
-								headerTitleStyle: {
-									fontWeight: 'bold',
-									fontSize: 30,
-									color: '#ddd',
-								},
-							}}
-						/>
+						<Stack.Screen name='Pantry' component={Pantry} />
+						<Stack.Screen name='Products' component={Products} />
 					</Stack.Navigator>
 				) : (
 					<Stack.Navigator>
@@ -80,11 +53,12 @@ const App = () => {
 								},
 							}}
 						/>
+						<Stack.Screen name='Pantry' component={Pantry} />
 						<Stack.Screen
-							name='Pantry'
-							component={Pantry}
+							name='Products'
+							component={Products}
 							options={{
-								title: 'Family Tasks',
+								title: 'Products',
 								headerStyle: {
 									backgroundColor: '#258a85',
 								},
@@ -96,7 +70,6 @@ const App = () => {
 								},
 							}}
 						/>
-						<Stack.Screen name='Products' component={Products} />
 
 						<Stack.Screen
 							name='SignUp'

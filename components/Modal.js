@@ -7,15 +7,7 @@ import { Ionicons } from '@expo/vector-icons'
 const ModalComponent = ({ children, visible, visibility, submit }) => {
 	return (
 		<View style={styles.centeredView}>
-			<Modal
-				animationType='fade'
-				transparent={true}
-				visible={visible}
-				onRequestClose={() => {
-					Alert.alert('Modal has been closed.')
-					visibility(!visible)
-				}}
-			>
+			<Modal animationType='fade' transparent={true} visible={visible}>
 				<View style={styles.modalView}>
 					{children}
 					<View style={styles.btnContainer}>

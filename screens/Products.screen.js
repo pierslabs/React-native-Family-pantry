@@ -12,8 +12,8 @@ import {
 	ImageBackground,
 } from 'react-native'
 import List from '../components/List'
-import ItemComponent from '../components/item'
-
+import ProductComponent from '../components/product'
+import { linear } from 'react-native/Libraries/Animated/Easing'
 import Modal from '../components/Modal'
 import { Toast } from 'react-native-toast-message/lib/src/Toast'
 import { styles } from './styles/Pantry.styles'
@@ -21,12 +21,13 @@ import { useFormik } from 'formik'
 import * as Yup from 'yup'
 
 const Products = ({ navigation, route }) => {
-	const { id } = route.params
+	const { id, name } = route.params
 	const [products, setProduct] = useState()
 	const [productId, setProductId] = useState()
 	const [modalVisible, setModalVisible] = useState(false)
 	const [isLoading, setIsloading] = useState(true)
 	const [modalDeleteVisible, setModalDeleteVisible] = useState(false)
+	const [refreshing, setRefreshing] = useState(false)
 
 	const formik = useFormik({
 		initialValues: {
@@ -63,7 +64,7 @@ const Products = ({ navigation, route }) => {
 				return Toast.show({
 					type: 'success',
 					text1: `Nueva producto ${data.name} añadido!!`,
-					visibilityTime: 2000,
+					visibilityTime: 3000,
 				})
 			} catch (error) {
 				return Toast.show({
@@ -89,6 +90,8 @@ const Products = ({ navigation, route }) => {
 			}
 		)
 		const data = await getPantry.json()
+
+		data.products.map((x) => (x.selected = false))
 		setProduct(data.products)
 		setIsloading(false)
 	}
@@ -128,36 +131,55 @@ const Products = ({ navigation, route }) => {
 	}
 
 	useEffect(() => {
+		navigation.setOptions({
+			title: name,
+			headerTitleAlign: 'center',
+			headerStyle: {
+				backgroundColor: '#258a85',
+			},
+			headerTintColor: linear,
+			headerTitleStyle: {
+				fontSize: 30,
+				color: '#ddd',
+			},
+		})
 		getPantry()
-	}, [])
+	}, [isLoading])
+
+	const selectItem = (item) => {
+		products.map((product) =>
+			product._id === item
+				? (product.selected = !product.selected)
+				: product.selected
+		)
+		setProduct(products)
+		setRefreshing(!refreshing)
+	}
 
 	return (
 		<View style={styles.container}>
-			{isLoading ? (
-				<ActivityIndicator size='large' color='#0d69f3' />
-			) : (
-				<ImageBackground
-					source={require('../assets/taskswallpaper.jpg')}
-					resizeMode='cover'
-					style={styles.image}
-				>
-					<List>
+			<ImageBackground
+				source={require('../assets/taskswallpaper.jpg')}
+				resizeMode='cover'
+				style={styles.image}
+			>
+				<List>
+					{isLoading ? (
+						<View style={styles.loader}>
+							<ActivityIndicator size={80} color='#229ed8' />
+						</View>
+					) : (
 						<FlatList
 							data={products}
-							keyExtractor={(item) => item._id}
+							keyExtractor={(index) => index._id.toString()}
 							renderItem={({ item }) => (
 								<View style={styles.productContanier}>
-									<ItemComponent
-										width={250}
-										name={item.name}
-										onLongPress={() => {
-											setProductId(item._id)
-											setModalDeleteVisible(!modalDeleteVisible)
-										}}
-									/>
-									<ItemComponent
-										width={130}
-										name={item.cuantity}
+									<ProductComponent
+										refreshing={refreshing}
+										onPress={() => selectItem(item._id)}
+										selectItem={item.selected}
+										width={350}
+										name={`${item.name}  ${item.cuantity} `}
 										onLongPress={() => {
 											setProductId(item._id)
 											setModalDeleteVisible(!modalDeleteVisible)
@@ -166,56 +188,50 @@ const Products = ({ navigation, route }) => {
 								</View>
 							)}
 						/>
-					</List>
-					<Modal
-						visible={modalDeleteVisible}
-						visibility={setModalDeleteVisible}
-						submit={deletePantry}
+					)}
+				</List>
+				<Modal
+					visible={modalDeleteVisible}
+					visibility={setModalDeleteVisible}
+					submit={deletePantry}
+				>
+					<Text style={styles.text}>Quieres eliminar el Producto ?</Text>
+				</Modal>
+				<View>
+					<TouchableOpacity
+						style={styles.btn}
+						onPress={() => setModalVisible(!modalVisible)}
 					>
-						<Text style={styles.text}>Quieres eliminar el Producto ?</Text>
-						{isLoading ? (
-							<ActivityIndicator size='large' color='#0d69f3' />
-						) : null}
-					</Modal>
-					<View>
-						<TouchableOpacity
-							style={styles.btn}
-							onPress={() => setModalVisible(!modalVisible)}
-						>
-							<Text style={styles.btntext}>+</Text>
-						</TouchableOpacity>
-					</View>
-					<Modal
-						visible={modalVisible}
-						visibility={setModalVisible}
-						submit={formik.handleSubmit}
-					>
-						<Text style={styles.text}> Añade un producto</Text>
-						<TextInput
-							onChangeText={formik.handleChange('name')}
-							value={formik.values.name}
-							placeholder='Nueva cesta'
-							style={styles.input}
-						/>
-						{formik.errors.name && formik.touched.name ? (
-							<Text style={{ color: '#9b2121' }}>{formik.errors.name}</Text>
-						) : null}
-						<TextInput
-							onChangeText={formik.handleChange('cuantity')}
-							value={formik.values.cuantity}
-							placeholder='Cantidad'
-							style={styles.input}
-						/>
-						{formik.errors.cuantity && formik.touched.cuantity ? (
-							<Text style={{ color: '#9b2121' }}>{formik.errors.cuantity}</Text>
-						) : null}
-						{isLoading ? (
-							<ActivityIndicator size='large' color='#0d69f3' />
-						) : null}
-					</Modal>
-					<Toast />
-				</ImageBackground>
-			)}
+						<Text style={styles.btntext}>+</Text>
+					</TouchableOpacity>
+				</View>
+				<Modal
+					visible={modalVisible}
+					visibility={setModalVisible}
+					submit={formik.handleSubmit}
+				>
+					<Text style={styles.text}> Añade un producto</Text>
+					<TextInput
+						onChangeText={formik.handleChange('name')}
+						value={formik.values.name}
+						placeholder='Nueva cesta'
+						style={styles.input}
+					/>
+					{formik.errors.name && formik.touched.name ? (
+						<Text style={{ color: '#9b2121' }}>{formik.errors.name}</Text>
+					) : null}
+					<TextInput
+						onChangeText={formik.handleChange('cuantity')}
+						value={formik.values.cuantity}
+						placeholder='Cantidad'
+						style={styles.input}
+					/>
+					{formik.errors.cuantity && formik.touched.cuantity ? (
+						<Text style={{ color: '#9b2121' }}>{formik.errors.cuantity}</Text>
+					) : null}
+				</Modal>
+				<Toast />
+			</ImageBackground>
 		</View>
 	)
 }
