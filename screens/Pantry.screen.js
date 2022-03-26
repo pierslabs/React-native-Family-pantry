@@ -140,29 +140,22 @@ const Pantry = ({ navigation }) => {
 			},
 			headerRight: () => (
 				<TouchableOpacity
-					onPress={async () => {
-						await AsyncStorage.removeItem('token')
-						navigation.navigate('Home')
-					}}
-					style={{
-						flexDirection: 'row',
-						alignItems: 'flex-end',
-						justifyContent: 'space-around',
-						width: 100,
-					}}
-				>
-					<Text
-						style={{
-							color: '#c5ad21',
-							fontSize: 20,
-							lineHeight: 20,
-						}}
-					>
-						Salir
-					</Text>
-
-					<Ionicons name='md-beer' size={30} color='#c5ad21' />
-				</TouchableOpacity>
+				onPress={async () => {
+					await AsyncStorage.removeItem('token')
+					navigation.navigate('Home')
+				}}
+				style={{
+					flexDirection: 'row',
+					alignItems: 'flex-end',
+					justifyContent: 'flex-end',
+					width: 100,
+				}}
+			>
+				<Text style={{ fontSize: 20, color: '#ec940f', fontWeight: '600' }}>
+					Logout
+				</Text>
+				<Ionicons name='arrow-redo-outline' size={35} color='#ec940f' />
+			</TouchableOpacity>
 			),
 		})
 		getPantrys()
