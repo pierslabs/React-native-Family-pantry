@@ -18,6 +18,7 @@
 			"supportsTablet": true
 		},
 		"android": {
+			"package":"tasker.pierslabs",
 			"adaptiveIcon": {
 				"foregroundImage": "./assets/background.png",
 				"backgroundColor": "#000"
