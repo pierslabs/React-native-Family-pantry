@@ -4,7 +4,7 @@
 		"slug": "tasker",
 		"version": "1.0.0",
 		"orientation": "portrait",
-		"icon": "./assets/background.png",
+		"icon": "./assets/iconStart.png",
 		"splash": {
 			"image": "./assets/background.png",
 			"resizeMode": "contain",
@@ -20,12 +20,12 @@
 		"android": {
 			"package":"tasker.pierslabs",
 			"adaptiveIcon": {
-				"foregroundImage": "./assets/background.png",
+				"foregroundImage": "./assets/iconStart.png",
 				"backgroundColor": "#000"
 			}
 		},
 		"web": {
-			"favicon": "./assets/background.png"
+			"favicon": "./assets/iconStart.png"
 		}
 	}
 }
