@@ -137,17 +137,19 @@ const Products = ({ navigation, route }) => {
 
 	useEffect(() => {
 		navigation.setOptions({
-			title: name,
+			title: '',
 			headerStyle: {
 				backgroundColor: '#00000078',
 			},
+			headeLeft: {},
+
+			tabBarVisible: false,
 			headerTransparent: true,
 			headerTintColor: linear,
 			headerTitleStyle: {
 				fontWeight: 'bold',
-				fontSize: 30,
+				fontSize: 20,
 				color: '#faf8f1',
-				borderWidth: 3,
 			},
 
 			headerRight: () => (

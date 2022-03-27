@@ -41,10 +41,12 @@ const App = () => {
 							name='Products'
 							component={Products}
 							options={{
-								title: 'Products',
+								title: '',
 								headerStyle: {
 									backgroundColor: '#258a85',
 								},
+								tabBarVisible: false,
+								headerTransparent: true,
 								headerTintColor: linear,
 								headerTitleStyle: {
 									fontWeight: 'bold',

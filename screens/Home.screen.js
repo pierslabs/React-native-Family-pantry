@@ -14,6 +14,7 @@ const Home = ({ navigation }) => {
 			headerStyle: {
 				backgroundColor: '#00000078',
 			},
+			tabBarVisible: false,
 			headerTransparent: true,
 
 			headerTitleStyle: {

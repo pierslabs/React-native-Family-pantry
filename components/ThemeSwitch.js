@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react'
 import { ThemeContext } from '../context/auth.context'
-import { Switch, View, StyleSheet } from 'react-native'
+import { Switch, View, StyleSheet, Image } from 'react-native'
 
 import { Ionicons } from '@expo/vector-icons'
 
@@ -9,6 +9,15 @@ const styles = StyleSheet.create({
 		flex: 1,
 		flexDirection: 'row',
 		alignItems: 'center',
+		justifyContent: 'space-around',
+	},
+	imageDark: {
+		width: 35,
+		height: 35,
+	},
+	pentContainer: {
+		backgroundColor: '#b12b2b',
+		borderRadius: 50,
 	},
 })
 
@@ -23,13 +32,20 @@ const ThemeSwitch = () => {
 
 	return (
 		<View style={styles.container}>
-			<Ionicons name='sunny' size={33} color='#ebbf0f' />
+			<Ionicons name='sunny' size={40} color='#ebbf0f' />
 			<Switch
 				trackColor={{ false: '#767577', true: '#81b0ff' }}
 				onValueChange={() => changeTheme()}
 				value={themeColor}
 			/>
-			<Ionicons name='skull' size={30} color='#f87307' />
+			<View style={styles.pentContainer}>
+				<Image
+					style={styles.imageDark}
+					width={20}
+					height={20}
+					source={require('../assets/pent.png')}
+				/>
+			</View>
 		</View>
 	)
 }

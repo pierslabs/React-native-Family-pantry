@@ -137,18 +137,28 @@ const Pantry = ({ navigation }) => {
 			headerStyle: {
 				backgroundColor: '#00000078',
 			},
+			tabBarVisible: false,
 			headerTransparent: true,
 			headerTintColor: linear,
 			headerTitleStyle: {
 				fontWeight: 'bold',
-				fontSize: 30,
+				fontSize: 20,
 				color: '#faf8f1',
 				borderWidth: 3,
 			},
 
 			headerRight: () => (
-				<View>
-					<ThemeSwitch />
+				<View
+					style={{
+						flexDirection: 'row',
+						width: Dimensions.get('window').width - 150,
+						justifyContent: 'space-between',
+						alignItems: 'center',
+					}}
+				>
+					<View>
+						<ThemeSwitch />
+					</View>
 					<TouchableOpacity
 						onPress={async () => {
 							await AsyncStorage.removeItem('token')
@@ -159,11 +169,6 @@ const Pantry = ({ navigation }) => {
 						<Text style={theme ? styles.textLog : styles.textLogDark}>
 							Logout
 						</Text>
-						<Ionicons
-							name='arrow-redo-outline'
-							size={30}
-							color={theme ? '#fd0e06' : '#ff7b00'}
-						/>
 					</TouchableOpacity>
 				</View>
 			),
