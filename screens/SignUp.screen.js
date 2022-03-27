@@ -81,7 +81,7 @@ const SignUp = ({ setIsModalVisible, isModalVisible, navigation }) => {
 			}
 			resizeMode='cover'
 			style={styles.image}
-			blurRadius={3}
+			blurRadius={theme ? 3 : null}
 		>
 			<View style={theme ? styles.inputContainer : styles.cardDark}>
 				<Text style={theme ? styles.title : styles.titleDark}>Regístrate</Text>

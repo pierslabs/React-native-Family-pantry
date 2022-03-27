@@ -61,7 +61,7 @@ const App = () => {
 							component={SignUp}
 							options={{
 								headerTitleAlign: 'center',
-								title: 'Regístrate',
+								title: '',
 								headerTransparent: true,
 								headerShown: true,
 								headerTintColor: linear,
@@ -76,7 +76,7 @@ const App = () => {
 							name='Login'
 							component={Login}
 							options={{
-								title: 'Login',
+								title: '',
 								headerTitleAlign: 'center',
 								headerTransparent: true,
 								headerShown: true,

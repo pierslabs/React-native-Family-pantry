@@ -133,7 +133,19 @@ const Pantry = ({ navigation }) => {
 
 	useEffect(() => {
 		navigation.setOptions({
-			title: 'Listas',
+			title: '',
+			headerLeft: () => (
+				<TouchableOpacity
+					onPress={async () => {
+						await AsyncStorage.removeItem('token')
+						navigation.navigate('Home')
+					}}
+					style={theme ? styles.logTouch : styles.logTouchDark}
+				>
+					<Ionicons name='arrow-undo-outline' size={35} color='#942626' />
+				</TouchableOpacity>
+			),
+
 			headerStyle: {
 				backgroundColor: '#00000078',
 			},
@@ -148,28 +160,10 @@ const Pantry = ({ navigation }) => {
 			},
 
 			headerRight: () => (
-				<View
-					style={{
-						flexDirection: 'row',
-						width: Dimensions.get('window').width - 150,
-						justifyContent: 'space-between',
-						alignItems: 'center',
-					}}
-				>
+				<View>
 					<View>
 						<ThemeSwitch />
 					</View>
-					<TouchableOpacity
-						onPress={async () => {
-							await AsyncStorage.removeItem('token')
-							navigation.navigate('Home')
-						}}
-						style={theme ? styles.logTouch : styles.logTouchDark}
-					>
-						<Text style={theme ? styles.textLog : styles.textLogDark}>
-							Logout
-						</Text>
-					</TouchableOpacity>
 				</View>
 			),
 		})
@@ -187,6 +181,7 @@ const Pantry = ({ navigation }) => {
 				resizeMode='cover'
 				style={styles.image}
 			>
+				<Text>Listas</Text>
 				<List>
 					{isLoading ? (
 						<View style={styles.loader}>

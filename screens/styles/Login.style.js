@@ -66,4 +66,9 @@ export const styles = {
 		marginBottom: 10,
 		color: '#b69333',
 	},
+	imageDark: {
+		flex: 1,
+		justifyContent: 'center',
+		alignItems: 'center',
+	},
 }

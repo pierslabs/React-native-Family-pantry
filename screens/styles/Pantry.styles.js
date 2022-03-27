@@ -77,7 +77,7 @@ export const styles = {
 	},
 	textLog: {
 		fontSize: 20,
-		color: '#ff0000',
+		color: '#943636',
 	},
 	textLogDark: {
 		fontSize: 20,

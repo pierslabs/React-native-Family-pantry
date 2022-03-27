@@ -74,7 +74,7 @@ const Login = ({ navigation }) => {
 			}
 			resizeMode='cover'
 			style={styles.image}
-			blurRadius={3}
+			blurRadius={theme ? 3 : 1}
 		>
 			<View style={theme ? styles.infoContainer : styles.infoContainerDark}>
 				<View style={theme ? styles.card : styles.cardDark}>

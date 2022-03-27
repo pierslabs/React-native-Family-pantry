@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
 		height: 35,
 	},
 	pentContainer: {
-		backgroundColor: '#b12b2b',
+		backgroundColor: '#bb4b4b',
 		borderRadius: 50,
 	},
 })
@@ -32,7 +32,7 @@ const ThemeSwitch = () => {
 
 	return (
 		<View style={styles.container}>
-			<Ionicons name='sunny' size={40} color='#ebbf0f' />
+			<Ionicons name='sunny' size={40} color='#d3ad17' />
 			<Switch
 				trackColor={{ false: '#767577', true: '#81b0ff' }}
 				onValueChange={() => changeTheme()}
