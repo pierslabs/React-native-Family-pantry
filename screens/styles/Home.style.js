@@ -31,4 +31,28 @@ export const styles = {
 		flexDirection: 'row',
 		justifyContent: 'space-around',
 	},
+	infoContainerDark: {
+		height: 300,
+		width: Dimensions.get('window').width - 20,
+		justifyContent: 'space-around',
+		alignItems: 'center',
+		backgroundColor: 'rgba(42, 42, 43, 0.945)',
+		paddingHorizontal: 1,
+	},
+	titleDark: {
+		fontSize: 28,
+		color: '#9e8234',
+		fontWeight: 'bold',
+	},
+	textDark: {
+		fontSize: 22,
+		color: '#a82c2c',
+		textAlign: 'center',
+	},
+	btnDark: {
+		color: '#d4bd38',
+	},
+	btn: {
+		color: '#000',
+	},
 }

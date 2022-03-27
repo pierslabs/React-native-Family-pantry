@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react'
-import { TouchableOpacity, Text } from 'react-native'
-import { Ionicons } from '@expo/vector-icons'
 import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
-import UserProvider from './context/auth.context'
+import ThemeProvider from './context/auth.context'
 import Home from './screens/Home.screen'
 import Login from './screens/Login.screen'
 import SignUp from './screens/SignUp.screen'
@@ -28,7 +26,7 @@ const App = () => {
 		getToken()
 	})
 	return (
-		<UserProvider>
+		<ThemeProvider>
 			<NavigationContainer>
 				{token ? (
 					<Stack.Navigator>
@@ -37,31 +35,18 @@ const App = () => {
 					</Stack.Navigator>
 				) : (
 					<Stack.Navigator>
-						<Stack.Screen
-							name='Home'
-							component={Home}
-							options={{
-								title: 'Family tasks',
-								headerStyle: {
-									backgroundColor: '#258a85',
-								},
-								headerTintColor: linear,
-								headerTitleStyle: {
-									fontWeight: 'bold',
-									fontSize: 30,
-									color: '#ddd',
-								},
-							}}
-						/>
+						<Stack.Screen name='Home' component={Home} />
 						<Stack.Screen name='Pantry' component={Pantry} />
 						<Stack.Screen
 							name='Products'
 							component={Products}
 							options={{
-								title: 'Products',
+								title: '',
 								headerStyle: {
 									backgroundColor: '#258a85',
 								},
+								tabBarVisible: false,
+								headerTransparent: true,
 								headerTintColor: linear,
 								headerTitleStyle: {
 									fontWeight: 'bold',
@@ -75,10 +60,10 @@ const App = () => {
 							name='SignUp'
 							component={SignUp}
 							options={{
-								title: 'Regístrate',
-								headerStyle: {
-									backgroundColor: '#258a85',
-								},
+								headerTitleAlign: 'center',
+								title: '',
+								headerTransparent: true,
+								headerShown: true,
 								headerTintColor: linear,
 								headerTitleStyle: {
 									fontWeight: 'bold',
@@ -91,10 +76,10 @@ const App = () => {
 							name='Login'
 							component={Login}
 							options={{
-								title: 'Login',
-								headerStyle: {
-									backgroundColor: '#258a85',
-								},
+								title: '',
+								headerTitleAlign: 'center',
+								headerTransparent: true,
+								headerShown: true,
 								headerTintColor: linear,
 								headerTitleStyle: {
 									fontWeight: 'bold',
@@ -106,7 +91,7 @@ const App = () => {
 					</Stack.Navigator>
 				)}
 			</NavigationContainer>
-		</UserProvider>
+		</ThemeProvider>
 	)
 }
 
