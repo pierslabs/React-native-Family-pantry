@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { Ionicons } from '@expo/vector-icons'
 import {
@@ -11,6 +11,7 @@ import {
 	ActivityIndicator,
 	Dimensions,
 	ImageBackground,
+	Image,
 } from 'react-native'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
@@ -20,9 +21,13 @@ import List from '../components/List'
 import Modal from '../components/Modal'
 import { Toast } from 'react-native-toast-message/lib/src/Toast'
 import { linear } from 'react-native/Libraries/Animated/Easing'
+import { ThemeContext } from '../context/auth.context'
+import ThemeSwitch from '../components/ThemeSwitch'
 
 // eslint-disable-next-line react/prop-types
 const Pantry = ({ navigation }) => {
+	const { theme } = useContext(ThemeContext)
+
 	const [pantrys, setPantrys] = useState({ name: '' })
 	const [pantryId, setPantryId] = useState()
 	const [modalVisible, setModalVisible] = useState(false)
@@ -128,34 +133,39 @@ const Pantry = ({ navigation }) => {
 
 	useEffect(() => {
 		navigation.setOptions({
-			title: 'Mis Listas',
+			title: 'Listas',
 			headerStyle: {
-				backgroundColor: '#258a85',
+				backgroundColor: '#00000078',
 			},
+			headerTransparent: true,
 			headerTintColor: linear,
 			headerTitleStyle: {
 				fontWeight: 'bold',
 				fontSize: 30,
-				color: '#ddd',
+				color: '#faf8f1',
+				borderWidth: 3,
 			},
+
 			headerRight: () => (
-				<TouchableOpacity
-					onPress={async () => {
-						await AsyncStorage.removeItem('token')
-						navigation.navigate('Home')
-					}}
-					style={{
-						flexDirection: 'row',
-						alignItems: 'flex-end',
-						justifyContent: 'flex-end',
-						width: 100,
-					}}
-				>
-					<Text style={{ fontSize: 20, color: '#ec940f', fontWeight: '600' }}>
-						Logout
-					</Text>
-					<Ionicons name='arrow-redo-outline' size={35} color='#ec940f' />
-				</TouchableOpacity>
+				<View>
+					<ThemeSwitch />
+					<TouchableOpacity
+						onPress={async () => {
+							await AsyncStorage.removeItem('token')
+							navigation.navigate('Home')
+						}}
+						style={theme ? styles.logTouch : styles.logTouchDark}
+					>
+						<Text style={theme ? styles.textLog : styles.textLogDark}>
+							Logout
+						</Text>
+						<Ionicons
+							name='arrow-redo-outline'
+							size={30}
+							color={theme ? '#fd0e06' : '#ff7b00'}
+						/>
+					</TouchableOpacity>
+				</View>
 			),
 		})
 		getPantrys()
@@ -164,7 +174,11 @@ const Pantry = ({ navigation }) => {
 	return (
 		<View style={styles.container}>
 			<ImageBackground
-				source={require('../assets/taskswallpaper.jpg')}
+				source={
+					theme
+						? require('../assets/taskswallpaper.jpg')
+						: require('../assets/skullwallpaper.jpg')
+				}
 				resizeMode='cover'
 				style={styles.image}
 			>
@@ -202,32 +216,47 @@ const Pantry = ({ navigation }) => {
 					visibility={setModalDeleteVisible}
 					submit={deletePantry}
 				>
-					<Text style={styles.text}>Quieres eliminar esta cesta? </Text>
-					{/* {isLoading ? (
-						<View style={styles.loader}>
-							<ActivityIndicator size={80} color='#2262d8' />
-						</View>
-					) : null} */}
+					<Text style={theme ? styles.text : styles.textDark}>
+						Quieres eliminar esta cesta?
+					</Text>
 				</Modal>
-				<View style={styles.btnConatiner}>
-					<TouchableOpacity
-						style={styles.btn}
-						onPress={() => setModalVisible(!modalDeleteVisible)}
-					>
-						<Text style={styles.btntext}>+</Text>
-					</TouchableOpacity>
-				</View>
+				{theme ? (
+					<View style={styles.btnConatiner}>
+						<TouchableOpacity
+							style={styles.btn}
+							onPress={() => setModalVisible(!modalDeleteVisible)}
+						>
+							<Text style={styles.btntext}>+</Text>
+						</TouchableOpacity>
+					</View>
+				) : (
+					<View style={theme ? styles.btnConatiner : styles.btnConatinerDark}>
+						<TouchableOpacity
+							style={theme ? styles.btn : styles.btnDark}
+							onPress={() => setModalVisible(!modalDeleteVisible)}
+						>
+							<Image
+								style={styles.imageDark}
+								width={20}
+								height={20}
+								source={require('../assets/add.png')}
+							/>
+						</TouchableOpacity>
+					</View>
+				)}
 				<Modal
 					visible={modalVisible}
 					visibility={setModalVisible}
 					submit={formik.handleSubmit}
 				>
-					<Text style={styles.text}> Añade una nueva cesta</Text>
+					<Text style={theme ? styles.text : styles.textDark}>
+						Añade una nueva cesta
+					</Text>
 					<TextInput
 						onChangeText={formik.handleChange('name')}
 						value={formik.values.name}
 						placeholder='Nueva cesta'
-						style={styles.input}
+						style={theme ? styles.input : styles.inputDark}
 					/>
 					{formik.errors.name && formik.touched.name ? (
 						<Text style={{ color: '#9b2121' }}>{formik.errors.name}</Text>

@@ -3,6 +3,6 @@ export const styles = {
 		flex: 1,
 		justifyContent: 'center',
 		alignItems: 'center',
-		marginTop: 30,
+		marginTop: 130,
 	},
 }

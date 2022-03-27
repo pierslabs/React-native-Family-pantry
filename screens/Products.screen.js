@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
 import {
@@ -10,6 +10,7 @@ import {
 	ActivityIndicator,
 	TextInput,
 	ImageBackground,
+	Image,
 } from 'react-native'
 import List from '../components/List'
 import ProductComponent from '../components/product'
@@ -19,8 +20,12 @@ import { Toast } from 'react-native-toast-message/lib/src/Toast'
 import { styles } from './styles/Pantry.styles'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
+import { ThemeContext } from '../context/auth.context'
+import ThemeSwitch from '../components/ThemeSwitch'
 
 const Products = ({ navigation, route }) => {
+	const { theme } = useContext(ThemeContext)
+
 	const { id, name } = route.params
 	const [products, setProduct] = useState()
 	const [productId, setProductId] = useState()
@@ -133,16 +138,25 @@ const Products = ({ navigation, route }) => {
 	useEffect(() => {
 		navigation.setOptions({
 			title: name,
-			headerTitleAlign: 'center',
 			headerStyle: {
-				backgroundColor: '#258a85',
+				backgroundColor: '#00000078',
 			},
+			headerTransparent: true,
 			headerTintColor: linear,
 			headerTitleStyle: {
+				fontWeight: 'bold',
 				fontSize: 30,
-				color: '#ddd',
+				color: '#faf8f1',
+				borderWidth: 3,
 			},
+
+			headerRight: () => (
+				<View>
+					<ThemeSwitch />
+				</View>
+			),
 		})
+
 		getPantry()
 	}, [isLoading])
 
@@ -159,7 +173,11 @@ const Products = ({ navigation, route }) => {
 	return (
 		<View style={styles.container}>
 			<ImageBackground
-				source={require('../assets/taskswallpaper.jpg')}
+				source={
+					theme
+						? require('../assets/taskswallpaper.jpg')
+						: require('../assets/skullwallpaper.jpg')
+				}
 				resizeMode='cover'
 				style={styles.image}
 			>
@@ -197,25 +215,43 @@ const Products = ({ navigation, route }) => {
 				>
 					<Text style={styles.text}>Quieres eliminar el Producto ?</Text>
 				</Modal>
-				<View>
-					<TouchableOpacity
-						style={styles.btn}
-						onPress={() => setModalVisible(!modalVisible)}
-					>
-						<Text style={styles.btntext}>+</Text>
-					</TouchableOpacity>
-				</View>
+				{theme ? (
+					<View style={styles.btnConatiner}>
+						<TouchableOpacity
+							style={styles.btn}
+							onPress={() => setModalVisible(!modalVisible)}
+						>
+							<Text style={styles.btntext}>+</Text>
+						</TouchableOpacity>
+					</View>
+				) : (
+					<View style={theme ? styles.btnConatiner : styles.btnConatinerDark}>
+						<TouchableOpacity
+							style={theme ? styles.btn : styles.btnDark}
+							onPress={() => setModalVisible(!modalVisible)}
+						>
+							<Image
+								style={styles.imageDark}
+								width={20}
+								height={20}
+								source={require('../assets/add.png')}
+							/>
+						</TouchableOpacity>
+					</View>
+				)}
 				<Modal
 					visible={modalVisible}
 					visibility={setModalVisible}
 					submit={formik.handleSubmit}
 				>
-					<Text style={styles.text}> Añade un producto</Text>
+					<Text style={theme ? styles.text : styles.textDark}>
+						Añade un producto
+					</Text>
 					<TextInput
 						onChangeText={formik.handleChange('name')}
 						value={formik.values.name}
 						placeholder='Nueva cesta'
-						style={styles.input}
+						style={theme ? styles.input : styles.inputDark}
 					/>
 					{formik.errors.name && formik.touched.name ? (
 						<Text style={{ color: '#9b2121' }}>{formik.errors.name}</Text>
@@ -224,7 +260,7 @@ const Products = ({ navigation, route }) => {
 						onChangeText={formik.handleChange('cuantity')}
 						value={formik.values.cuantity}
 						placeholder='Cantidad'
-						style={styles.input}
+						style={theme ? styles.input : styles.inputDark}
 					/>
 					{formik.errors.cuantity && formik.touched.cuantity ? (
 						<Text style={{ color: '#9b2121' }}>{formik.errors.cuantity}</Text>

@@ -58,10 +58,10 @@ const App = () => {
 							name='SignUp'
 							component={SignUp}
 							options={{
+								headerTitleAlign: 'center',
 								title: 'Regístrate',
-								headerStyle: {
-									backgroundColor: '#258a85',
-								},
+								headerTransparent: true,
+								headerShown: true,
 								headerTintColor: linear,
 								headerTitleStyle: {
 									fontWeight: 'bold',
@@ -75,9 +75,9 @@ const App = () => {
 							component={Login}
 							options={{
 								title: 'Login',
-								headerStyle: {
-									backgroundColor: '#258a85',
-								},
+								headerTitleAlign: 'center',
+								headerTransparent: true,
+								headerShown: true,
 								headerTintColor: linear,
 								headerTitleStyle: {
 									fontWeight: 'bold',

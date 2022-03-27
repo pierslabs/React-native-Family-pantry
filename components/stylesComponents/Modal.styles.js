@@ -26,4 +26,31 @@ export const styles = {
 		width: 400,
 	},
 	text: { width: 150, fontSize: 20 },
+	modalViewDark: {
+		margin: 20,
+		backgroundColor: '#161616e6',
+		borderRadius: 20,
+		padding: 35,
+		alignItems: 'center',
+		shadowColor: '#000',
+		shadowOffset: {
+			width: 0,
+			height: 2,
+		},
+		shadowOpacity: 0.25,
+		shadowRadius: 4,
+		elevation: 5,
+	},
+	btnContainerDark: {
+		marginTop: 40,
+		flexDirection: 'row',
+		justifyContent: 'space-around',
+		alignItems: 'center',
+		width: 400,
+	},
+	imageDark: {
+		width: 60,
+		height: 70,
+		resizeMode: 'contain',
+	},
 }

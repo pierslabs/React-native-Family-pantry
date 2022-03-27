@@ -2,7 +2,6 @@
 import React, { useContext, useEffect } from 'react'
 import { View, Text, TouchableOpacity, ImageBackground } from 'react-native'
 import { styles } from './styles/Home.style'
-import { linear } from 'react-native/Libraries/Animated/Easing'
 import ThemeSwitch from '../components/ThemeSwitch'
 import { ThemeContext } from '../context/auth.context'
 
@@ -11,17 +10,24 @@ const Home = ({ navigation }) => {
 
 	useEffect(() => {
 		navigation.setOptions({
-			title: 'Family tasks',
+			title: 'Tasker',
 			headerStyle: {
-				backgroundColor: theme ? '#258a85' : '#000',
+				backgroundColor: '#00000078',
 			},
-			headerTintColor: linear,
+			headerTransparent: true,
+
 			headerTitleStyle: {
 				fontWeight: 'bold',
 				fontSize: 30,
-				color: '#ddd',
+				color: '#faf8f1',
+				borderWidth: 3,
 			},
-			headerRight: () => <ThemeSwitch />,
+
+			headerRight: () => (
+				<View>
+					<ThemeSwitch />
+				</View>
+			),
 		})
 	}, [])
 
