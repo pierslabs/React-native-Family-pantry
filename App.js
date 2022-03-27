@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react'
-import { TouchableOpacity, Text } from 'react-native'
-import { Ionicons } from '@expo/vector-icons'
 import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
-import UserProvider from './context/auth.context'
+import ThemeProvider from './context/auth.context'
 import Home from './screens/Home.screen'
 import Login from './screens/Login.screen'
 import SignUp from './screens/SignUp.screen'
@@ -28,7 +26,7 @@ const App = () => {
 		getToken()
 	})
 	return (
-		<UserProvider>
+		<ThemeProvider>
 			<NavigationContainer>
 				{token ? (
 					<Stack.Navigator>
@@ -37,22 +35,7 @@ const App = () => {
 					</Stack.Navigator>
 				) : (
 					<Stack.Navigator>
-						<Stack.Screen
-							name='Home'
-							component={Home}
-							options={{
-								title: 'Family tasks',
-								headerStyle: {
-									backgroundColor: '#258a85',
-								},
-								headerTintColor: linear,
-								headerTitleStyle: {
-									fontWeight: 'bold',
-									fontSize: 30,
-									color: '#ddd',
-								},
-							}}
-						/>
+						<Stack.Screen name='Home' component={Home} />
 						<Stack.Screen name='Pantry' component={Pantry} />
 						<Stack.Screen
 							name='Products'
@@ -106,7 +89,7 @@ const App = () => {
 					</Stack.Navigator>
 				)}
 			</NavigationContainer>
-		</UserProvider>
+		</ThemeProvider>
 	)
 }
 

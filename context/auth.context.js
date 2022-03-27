@@ -1,27 +1,16 @@
-import React, { createContext, useState, useEffect } from 'react'
+import React, { createContext, useState } from 'react'
 
-import AsyncStorage from '@react-native-async-storage/async-storage'
-
-export const userContext = createContext()
+export const ThemeContext = createContext()
 
 // eslint-disable-next-line react/prop-types
-const UserProvider = ({ children }) => {
-	const [userToken, setToken] = useState()
-
-	const getToken = async () => {
-		const token = await AsyncStorage.getItem('token')
-		setToken(token)
-	}
-
-	useEffect(() => {
-		getToken()
-	}, [])
+const ThemeProvider = ({ children }) => {
+	const [theme, setTheme] = useState(true)
 
 	return (
-		<userContext.Provider value={{ userToken: userToken }}>
+		<ThemeContext.Provider value={{ theme, setTheme }}>
 			{children}
-		</userContext.Provider>
+		</ThemeContext.Provider>
 	)
 }
 
-export default UserProvider
+export default ThemeProvider

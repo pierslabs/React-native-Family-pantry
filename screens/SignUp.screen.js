@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import { useFormik } from 'formik'
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import {
 	View,
 	Text,
@@ -12,8 +12,10 @@ import {
 import * as Yup from 'yup'
 import Toast from 'react-native-toast-message'
 import { styles } from './styles/SignUp.style'
+import { ThemeContext } from '../context/auth.context'
 
 const SignUp = ({ setIsModalVisible, isModalVisible, navigation }) => {
+	const { theme } = useContext(ThemeContext)
 	const [isLoading, setIsloading] = useState(false)
 	const formik = useFormik({
 		initialValues: {
@@ -74,18 +76,20 @@ const SignUp = ({ setIsModalVisible, isModalVisible, navigation }) => {
 
 	return (
 		<ImageBackground
-			source={require('../assets/tasks.jpg')}
+			source={
+				theme ? require('../assets/tasks.jpg') : require('../assets/signup.jpg')
+			}
 			resizeMode='cover'
 			style={styles.image}
 			blurRadius={3}
 		>
-			<View style={styles.inputContainer}>
-				<Text style={styles.title}>Regístrate</Text>
+			<View style={theme ? styles.inputContainer : styles.cardDark}>
+				<Text style={theme ? styles.title : styles.titleDark}>Regístrate</Text>
 				<TextInput
 					onChangeText={formik.handleChange('name')}
 					value={formik.values.name}
 					placeholder='Nombre'
-					style={styles.input}
+					style={theme ? styles.input : styles.inputDark}
 				/>
 				{formik.errors.name && formik.touched.name ? (
 					<Text style={{ color: '#9b2121' }}>{formik.errors.name}</Text>
@@ -95,7 +99,7 @@ const SignUp = ({ setIsModalVisible, isModalVisible, navigation }) => {
 					onChangeText={formik.handleChange('email')}
 					value={formik.values.email}
 					placeholder='Email'
-					style={styles.input}
+					style={theme ? styles.input : styles.inputDark}
 				/>
 				{formik.errors.email && formik.touched.email ? (
 					<Text style={{ color: '#9b2121' }}>{formik.errors.email}</Text>
@@ -104,7 +108,7 @@ const SignUp = ({ setIsModalVisible, isModalVisible, navigation }) => {
 					onChangeText={formik.handleChange('password')}
 					value={formik.values.password}
 					placeholder='Password'
-					style={styles.input}
+					style={theme ? styles.input : styles.inputDark}
 				/>
 				{formik.errors.password && formik.touched.password ? (
 					<Text style={{ color: '#9b2121', marginBottom: 10 }}>
@@ -115,7 +119,7 @@ const SignUp = ({ setIsModalVisible, isModalVisible, navigation }) => {
 				{isLoading ? <ActivityIndicator size='large' color='#0d69f3' /> : null}
 				<View style={styles.btnConatiner}>
 					<TouchableOpacity onPress={formik.handleSubmit}>
-						<Text>Aceptar</Text>
+						<Text style={theme ? styles.text : styles.textDark}>Aceptar</Text>
 					</TouchableOpacity>
 				</View>
 			</View>
