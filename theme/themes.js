@@ -5,6 +5,8 @@ const light = {
 	color5: ' #9b2121',
 	color6: ' #7a5c8d',
 	color7: '#534545',
+	color8: '#224545',
+
 }
 
 export { light }
